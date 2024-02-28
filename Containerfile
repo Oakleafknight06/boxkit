@@ -1,20 +1,21 @@
-FROM quay.io/toolbx-images/alpine-toolbox:edge
+ARG SOURCE_IMAGE_NAME="${SOURCE_IMAGE_NAME:-wolfi-toolbox}"
+ARG SOURCE_IMAGE_REGISTRY="${SOURCE_IMAGE_REGISTRY:-ghcr.io/ublue-os}"
+ARG SOURCE_IMAGE="${SOURCE_IMAGE_REGISTRY}/${SOURCE_IMAGE_NAME}"
+
+FROM $SOURCE_IMAGE:latest
 
 LABEL com.github.containers.toolbox="true" \
-      usage="This image is meant to be used with the toolbox or distrobox command" \
-      summary="A cloud-native terminal experience" \
-      maintainer="jorge.castro@gmail.com"
+      usage="This image is meant to be used with the Toolbox or Distrobox commands" \
+      summary="A new cloud-native terminal experience powered by Wolfi and Homebrew" \
+      maintainer=""
 
-COPY extra-packages /
+COPY ./extra-packages/ /toolbox-packages
+COPY ./files /
+
+# Update image, Install Packages, and move /home/linuxbrew
 RUN apk update && \
     apk upgrade && \
-    grep -v '^#' /extra-packages | xargs apk add
-RUN rm /extra-packages
+    grep -v '^#' /toolbox-packages | xargs apk add && \
+    mv /home/linuxbrew /home/homebrew && \
+    rm /toolbox-packages
 
-RUN   ln -fs /bin/sh /usr/bin/sh && \
-      ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/docker && \
-      ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/flatpak && \ 
-      ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/podman && \
-      ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/rpm-ostree && \
-      ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/transactional-update
-     
