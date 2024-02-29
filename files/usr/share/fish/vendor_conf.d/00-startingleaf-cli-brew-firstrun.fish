@@ -1,12 +1,12 @@
 if test "$(id -u)" -gt "0"
-  set blue (set_color blue)
-  set bold (set_color -o blue)
+  set green (set_color green)
+  set bold (set_color -o green)
   set normal (set_color normal)
   if test ! -f /etc/linuxbrew.firstrun
     printf "\nStartingleaf-CLI First Run Setup\n\n"
     printf "Setting up sudo for %s%s%s...\t\t\t " "$bold" "$USER" "$normal"
     echo "#$UID ALL = (root) NOPASSWD:ALL" | su-exec root tee -a /etc/sudoers > /dev/null
-    printf "%s[ OK ]%s\n" "$blue" "$normal"
+    printf "%s[ OK ]%s\n" "$green" "$normal"
   end
 
   if test ! -d /home/linuxbrew/.linuxbrew
@@ -25,7 +25,7 @@ if test "$(id -u)" -gt "0"
     su-exec root cp -R /home/homebrew/.linuxbrew /home/linuxbrew/
     su-exec root chown -R "$UID" /home/linuxbrew
     set -e linuxbrew_home
-    printf "%s[ OK ]%s\n" "$blue" "$normal"
+    printf "%s[ OK ]%s\n" "$green" "$normal"
   end
 
   if test ! -d /usr/local/share/bash-completion/completions
@@ -35,7 +35,7 @@ if test "$(id -u)" -gt "0"
     if test -x /run/host/usr/bin/ujust
       su-exec root ln -fs /usr/bin/distrobox-host-exec /usr/local/bin/ujust
     end
-    printf "%s[ OK ]%s\n" "$blue" "$normal"
+    printf "%s[ OK ]%s\n" "$green" "$normal"
   end
 
   if test ! -f /etc/linuxbrew.firstrun
