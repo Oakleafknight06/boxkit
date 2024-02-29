@@ -12,10 +12,11 @@ LABEL com.github.containers.toolbox="true" \
 COPY ./extra-packages/ /toolbox-packages
 COPY ./files /
 
-# Update image, Install Packages, and move /home/linuxbrew
+# Update image, Install Packages, and move /home/linuxbrew .. and change shell (test)
 RUN apk update && \
     apk upgrade && \
     grep -v '^#' /toolbox-packages | xargs apk add && \
     mv /home/linuxbrew /home/homebrew && \
     rm /toolbox-packages
+    chsh -s /usr/bin/fish
 
