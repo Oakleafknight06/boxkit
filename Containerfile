@@ -18,5 +18,3 @@ RUN apk update && \
     grep -v '^#' /toolbox-packages | xargs apk add && \
     mv /home/linuxbrew /home/homebrew && \
     rm /toolbox-packages
-    chsh -s /usr/bin/fish
-
